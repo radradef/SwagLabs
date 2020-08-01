@@ -1,7 +1,7 @@
 Feature: Login
 
   Background:
-    Given User goes to the login page
+    Given the user is on the login page
 
   Scenario: The user can see the login form
     Then he should see the login form

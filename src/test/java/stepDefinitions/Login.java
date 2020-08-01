@@ -6,6 +6,7 @@ import entities.Credentials;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.assertj.core.api.Assertions;
@@ -33,8 +34,8 @@ public class Login {
         productActions = new ProductActions(productPage);
     }
 
-    @When("^.* goes to the login page$")
-    public void goesToTheLoginPage() {
+    @Given("the user is on the login page")
+    public void theUserIsOnTheLoginPage() {
         driver.get(LoginPage.URL);
     }
 
@@ -95,7 +96,5 @@ public class Login {
     public void tearDown(){
         driver.close();
     }
-
-
 
 }
