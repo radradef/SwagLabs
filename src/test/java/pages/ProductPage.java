@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class ProductPage extends BasePage{
 
     @FindBy(className = "product_label")
@@ -18,6 +20,21 @@ public class ProductPage extends BasePage{
 
     @FindBy(xpath = "//button[contains(text(), 'Open Menu')]")
     public WebElement sidebarBtn;
+
+    @FindBy(className = "inventory_item")
+    public List<WebElement> itemList;
+
+    public static final By addToCartBtnBy
+            = By.xpath(".//button[(contains(text(),'ADD TO CART'))]");
+
+    public static final By itemNameBy
+            = By.xpath(".//div[contains(@class,'inventory_item_name')]");
+
+    public static final By itemPriceBy
+            = By.xpath(".//div[contains(@class,'inventory_item_price')]");
+
+    @FindBy(xpath = "//a[contains(@href,'./cart.html')]")
+    public WebElement cartLink;
 
     public ProductPage(WebDriver driver) {
         super(driver);

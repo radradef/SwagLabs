@@ -14,8 +14,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.LoginPage;
 import pages.ProductPage;
+import stepDefinitions.config.BaseStepDefs;
 
-public class Login {
+public class Login implements BaseStepDefs {
 
     private WebDriver driver;
     private LoginPage loginPage;
@@ -23,7 +24,7 @@ public class Login {
     private ProductPage productPage;
     private ProductPageActions productPageActions;
 
-    @Before
+    @Before("@loginFeature")
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
         driver = new ChromeDriver();
@@ -97,10 +98,9 @@ public class Login {
                 .containsIgnoringCase(error);
     }
 
-    @After
+    @After("@loginFeature")
     public void tearDown(){
         driver.close();
     }
-
 
 }

@@ -6,6 +6,8 @@ import pages.LoginPage;
 public class LoginPageActions extends BaseActions {
 
     private LoginPage loginPage;
+    private String defaultUser = "standard_user";
+    private String getDefaultPass = "secret_sauce";
 
     public LoginPageActions(LoginPage loginPage){
         super(loginPage.getDriver());
@@ -17,6 +19,14 @@ public class LoginPageActions extends BaseActions {
                 credentials.getUsername());
         fills(loginPage.passFld,
                 credentials.getPassword());
+        clicks(loginPage.loginBtn);
+    }
+
+    public void logsInDefault(){
+        fills(loginPage.usernameFld,
+                defaultUser);
+        fills(loginPage.passFld,
+                getDefaultPass);
         clicks(loginPage.loginBtn);
     }
 }
