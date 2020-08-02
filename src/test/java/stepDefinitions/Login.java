@@ -1,11 +1,10 @@
 package stepDefinitions;
 
-import actions.LoginActions;
-import actions.ProductActions;
+import actions.LoginPageActions;
+import actions.ProductPageActions;
 import entities.Credentials;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,23 +19,34 @@ public class Login {
 
     private WebDriver driver;
     private LoginPage loginPage;
-    private LoginActions loginActions;
+    private LoginPageActions loginActions;
     private ProductPage productPage;
-    private ProductActions productActions;
+    private ProductPageActions productPageActions;
 
     @Before
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
-        loginActions = new LoginActions(loginPage);
+        loginActions = new LoginPageActions(loginPage);
         productPage = new ProductPage(driver);
-        productActions = new ProductActions(productPage);
+        productPageActions = new ProductPageActions(productPage);
     }
 
     @Given("the user is on the login page")
     public void theUserIsOnTheLoginPage() {
         driver.get(LoginPage.URL);
+    }
+
+    //@Given
+    @When("^.* (?:logs|is logged) in with credentials:$")
+    public void logsInWithCredentials(Credentials credentials) {
+        loginActions.logsInWith(credentials);
+    }
+
+    @When("he/she logs out")
+    public void logOut() {
+        productPageActions.logOut();
     }
 
     @Then("she/he should see the login form")
@@ -55,15 +65,10 @@ public class Login {
         softly.assertAll();
     }
 
-    @When("^.* logs in with credentials:$")
-    public void logsInWithCredentials(Credentials credentials) {
-        loginActions.logsInWith(credentials);
-    }
-
     @Then("he/she should see the product page")
     public void shouldSeeTheProductsPage() {
         Assertions
-                .assertThat(productActions.canSee(ProductPage.productHeaderBy))
+                .assertThat(productPageActions.canSee(ProductPage.productHeaderBy))
                 .as("Product header is visible")
                 .isTrue();
     }
@@ -71,7 +76,7 @@ public class Login {
     @Then("the product page header should say: {string}")
     public void theProductHeaderShouldSay(String string) {
         Assertions
-                .assertThat(productActions.readsFrom(productPage.productHeader))
+                .assertThat(productPageActions.readsFrom(productPage.productHeader))
                 .as("product header has the correct text ")
                 .isEqualToIgnoringCase(string);
     }
@@ -96,5 +101,6 @@ public class Login {
     public void tearDown(){
         driver.close();
     }
+
 
 }

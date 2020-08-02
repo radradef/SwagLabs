@@ -13,6 +13,12 @@ public class ProductPage extends BasePage{
     public static final By productHeaderBy
             = By.className("product_label");
 
+    @FindBy(id = "logout_sidebar_link")
+    public WebElement logoutBtn;
+
+    @FindBy(xpath = "//button[contains(text(), 'Open Menu')]")
+    public WebElement sidebarBtn;
+
     public ProductPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);

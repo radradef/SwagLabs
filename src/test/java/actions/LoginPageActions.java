@@ -3,11 +3,11 @@ package actions;
 import entities.Credentials;
 import pages.LoginPage;
 
-public class LoginActions extends BaseActions {
+public class LoginPageActions extends BaseActions {
 
     private LoginPage loginPage;
 
-    public LoginActions(LoginPage loginPage){
+    public LoginPageActions(LoginPage loginPage){
         super(loginPage.getDriver());
         this.loginPage = loginPage;
     }

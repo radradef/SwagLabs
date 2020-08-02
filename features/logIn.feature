@@ -28,3 +28,10 @@ Feature: Login
           |username       |password      |
           |standard_user  |wrong_password|
           |wrong_user     |secret_sauce  |
+
+        Scenario: The user can successfully log out
+          Given John is logged in with credentials:
+            |username       |password    |
+            |standard_user  |secret_sauce|
+          When he logs out
+          Then he should see the login form
