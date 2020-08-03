@@ -20,6 +20,9 @@ public class CartPage extends BasePage {
     public static final By itemPriceBy
             = By.xpath(".//div[contains(@class,'inventory_item_price')]");
 
+    public static final By itemRemoveBtn
+            = By.xpath(".//button[contains(text(), 'REMOVE')]");
+
     public CartPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
@@ -34,5 +37,10 @@ public class CartPage extends BasePage {
                 .getText()));
 
         return  item;
+    }
+
+    public void removeItemFromCart(int index){
+        WebElement itemInCart = this.cartItemList.get(index);
+        clicks(itemInCart.findElement(CartPage.itemRemoveBtn));
     }
 }

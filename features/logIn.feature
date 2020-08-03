@@ -14,9 +14,10 @@ Feature: Login
       Then he should see the product page
       And the product page header should say: "Products"
       Examples:
-        |username       |password    |
-        |standard_user  |secret_sauce|
-        |locked_out_user|secret_sauce|
+        |username               |password    |
+        |standard_user          |secret_sauce|
+        |locked_out_user        |secret_sauce|
+        |performance_glitch_user|secret_sauce|
 
       Scenario Outline: The user tries to log in with wrong credentials
         When Lidia logs in with credentials:

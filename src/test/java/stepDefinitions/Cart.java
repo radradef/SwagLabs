@@ -3,9 +3,11 @@ package stepDefinitions;
 import entities.Item;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import pages.CartPage;
 import pages.LoginPage;
@@ -36,11 +38,16 @@ public class Cart extends BaseStepDefs {
        itemAddedToCart = productPage.addRandomItemToCart();
     }
 
-    @When("she/he navigates to the cart page")
+    @When("^.* navigates to the cart page$")
     public void navigatesToTheCartPage() {
         productPage.clicks(productPage.cartLink);
         cartPage = new CartPage(driver);
         cartPage.waitForPageLoad();
+    }
+
+    @When("he/she removes the item from the cart")
+    public void removesTheItemFromTheCart() {
+        cartPage.removeItemFromCart(0);
     }
 
     @Then("her/his item should appear in her/his cart")
@@ -58,6 +65,12 @@ public class Cart extends BaseStepDefs {
         softly.assertAll();
     }
 
+    @Then("the cart should be empty")
+    public void theCartShouldBeEmpty() {
+        Assertions.assertThat(cartPage.cartItemList.size())
+                .as("0 items in the Cart")
+                .isEqualTo(0);
+    }
     @After("@cartFeature")
     public void tearDown() {
         driver.close();

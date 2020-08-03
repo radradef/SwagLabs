@@ -18,6 +18,8 @@ public class ProductPage extends BasePage{
 
     @FindBy(id = "logout_sidebar_link")
     public WebElement logoutBtn;
+    public static final By logoutBtnBy
+            = By.id("logout_sidebar_link");
 
     @FindBy(xpath = "//button[contains(text(), 'Open Menu')]")
     public WebElement sidebarBtn;
@@ -44,7 +46,11 @@ public class ProductPage extends BasePage{
 
     public void logOut(){
         clicks(this.sidebarBtn);
-        clicks(this.logoutBtn);
+        if(canSee(ProductPage.logoutBtnBy)){
+            clicks(this.logoutBtn);
+        } else {
+            throw new RuntimeException("Logout button not present");
+        }
     }
 
     public Item addRandomItemToCart() {
@@ -52,11 +58,14 @@ public class ProductPage extends BasePage{
         Random random = new Random();
         int randIndex = random.nextInt(itemList.size());
         WebElement item = itemList.get(randIndex);
-        String itemName = item.findElement(ProductPage.itemNameBy)
-                .getText();
-        float itemPrice = Float.parseFloat(item.findElement(ProductPage.itemPriceBy)
-                .getText()
-                .replaceAll("[^\\d.-]", ""));
+        String itemName = item
+                            .findElement(ProductPage.itemNameBy)
+                            .getText();
+        float itemPrice
+                = Float.parseFloat(item
+                                    .findElement(ProductPage.itemPriceBy)
+                                    .getText()
+                                    .replaceAll("[^\\d.-]", ""));
 
         clicks(item.findElement(ProductPage.addToCartBtnBy));
 
