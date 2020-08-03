@@ -1,12 +1,13 @@
 package pages;
 
+import entities.Item;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
 import java.util.List;
+import java.util.Random;
 
 public class ProductPage extends BasePage{
 
@@ -39,5 +40,30 @@ public class ProductPage extends BasePage{
     public ProductPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
+    }
+
+    public void logOut(){
+        clicks(this.sidebarBtn);
+        clicks(this.logoutBtn);
+    }
+
+    public Item addRandomItemToCart() {
+        List<WebElement> itemList = this.itemList;
+        Random random = new Random();
+        int randIndex = random.nextInt(itemList.size());
+        WebElement item = itemList.get(randIndex);
+        String itemName = item.findElement(ProductPage.itemNameBy)
+                .getText();
+        float itemPrice = Float.parseFloat(item.findElement(ProductPage.itemPriceBy)
+                .getText()
+                .replaceAll("[^\\d.-]", ""));
+
+        clicks(item.findElement(ProductPage.addToCartBtnBy));
+
+        Item addedItem = new Item();
+        addedItem.setName(itemName);
+        addedItem.setPrice(itemPrice);
+
+        return addedItem;
     }
 }

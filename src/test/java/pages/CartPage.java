@@ -1,5 +1,6 @@
 package pages;
 
+import entities.Item;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,5 +23,16 @@ public class CartPage extends BasePage {
     public CartPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
+    }
+
+    public Item getItem(int index){
+        WebElement itemInCart = this.cartItemList.get(index);
+        Item item = new Item();
+        item.setName(itemInCart.findElement(CartPage.itemNameBy)
+                .getText());
+        item.setPrice(Float.parseFloat(itemInCart.findElement(CartPage.itemPriceBy)
+                .getText()));
+
+        return  item;
     }
 }

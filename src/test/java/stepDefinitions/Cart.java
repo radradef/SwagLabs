@@ -1,8 +1,5 @@
 package stepDefinitions;
 
-import actions.CartPageActions;
-import actions.LoginPageActions;
-import actions.ProductPageActions;
 import entities.Item;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -10,58 +7,45 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.assertj.core.api.SoftAssertions;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.CartPage;
 import pages.LoginPage;
 import pages.ProductPage;
 import stepDefinitions.config.BaseStepDefs;
 
-public class Cart implements BaseStepDefs {
+public class Cart extends BaseStepDefs {
 
-    private WebDriver driver;
     private ProductPage productPage;
-    private ProductPageActions productPageActions;
     private CartPage cartPage;
-    private CartPageActions cartPageActions;
     private LoginPage loginPage;
-    private LoginPageActions loginPageActions;
     private Item itemAddedToCart;
 
     @Before("@cartFeature")
     public void setUp(){
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        productPage = new ProductPage(driver);
-        productPageActions = new ProductPageActions(productPage);
-        cartPage = new CartPage(driver);
-        cartPageActions = new CartPageActions(cartPage);
+        driverInit();
     }
 
     @Given("the user is on the Product page")
     public void theUserIsOnTheProductPage() {
         driver.get(LoginPage.URL);
         loginPage = new LoginPage(driver);
-        loginPageActions = new LoginPageActions(loginPage);
-        loginPageActions.logsInDefault();
-        productPageActions.waitForPageLoad();
+        productPage = loginPage.logsInDefault();
     }
 
     @When("^.* adds item to (?:his|her) cart$")
     public void addsItemToCart() {
-       itemAddedToCart = productPageActions.addRandomItemToCart();
+       itemAddedToCart = productPage.addRandomItemToCart();
     }
 
     @When("she/he navigates to the cart page")
     public void navigatesToTheCartPage() {
-        productPageActions.clicks(productPage.cartLink);
-        cartPageActions.waitForPageLoad();
+        productPage.clicks(productPage.cartLink);
+        cartPage = new CartPage(driver);
+        cartPage.waitForPageLoad();
     }
 
     @Then("her/his item should appear in her/his cart")
     public void itemShouldAppearInCart() {
-        Item itemInCart = cartPageActions.getItem(0);
+        Item itemInCart = cartPage.getItem(0);
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(itemAddedToCart.getName())

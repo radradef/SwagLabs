@@ -1,5 +1,6 @@
 package pages;
 
+import entities.Credentials;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,8 @@ import org.openqa.selenium.support.PageFactory;
 public class LoginPage extends BasePage {
 
     public static final String URL = "https://www.saucedemo.com/";
+    private String defaultUser = "standard_user";
+    private String getDefaultPass = "secret_sauce";
 
     @FindBy(id = "user-name")
     public WebElement usernameFld;
@@ -33,5 +36,27 @@ public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver,this);
+    }
+
+    public ProductPage logsInWith(Credentials credentials){
+        fills(this.usernameFld,
+                credentials.getUsername());
+        fills(this.passFld,
+                credentials.getPassword());
+        clicks(this.loginBtn);
+        waitForPageLoad();
+
+        return new ProductPage(driver);
+    }
+
+    public ProductPage logsInDefault(){
+        fills(this.usernameFld,
+                defaultUser);
+        fills(this.passFld,
+                getDefaultPass);
+        clicks(this.loginBtn);
+        waitForPageLoad();
+
+        return new ProductPage(driver);
     }
 }
